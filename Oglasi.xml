@@ -1,2 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Oglasi>
+    <Oglas>
+        <KategorijaOglasa>
+            <Automobili/>
+        </KategorijaOglasa>
+        <Datum_Isteka_Oglasa>2022-05-13</Datum_Isteka_Oglasa>
+        <Cena valuta="din">823000</Cena>
+        <TekstOglasa>
+                BMW 520 Rest 2009 god
+                Auto u odlicnom stanju
+                Bez ikakvih ulaganja i gresaka
+                Enterijer je kao nov
+        </TekstOglasa>
+        <Oznaka>
+            BMW
+        </Oznaka>
+        <Oznaka>
+            BWM 520
+        </Oznaka>
+        <Oznaka>
+            2009
+        </Oznaka>
+        <E-posta tip="sluzbeni">nesto@gmail.com</E-posta>
+    </Oglas>
+    <Oglas>
+        <KategorijaOglasa>
+            <Automobili/>
+        </KategorijaOglasa>
+        <Datum_Isteka_Oglasa>2022-08-22</Datum_Isteka_Oglasa>
+        <Cena valuta="eur">7000</Cena>
+        <TekstOglasa>
+            Audi A4 2.0 TDI QUATTRO 103KW
+            BPW MOTOR 8 VENTILA BOSCH DIZNE.
+            Nove sve 4 gume.
+            4X4 POGON RADI SAVRSENO.
+        </TekstOglasa>
+        <Oznaka>
+            Audi
+        </Oznaka>
+        <Oznaka>
+        </Oznaka>
+            4x4
+        <Oznaka>
+            Dizel
+        </Oznaka>
+        <E-posta  tip="privatni">nesto@gmail.com</E-posta>
+    </Oglas>
+    <Oglas>
+        <KategorijaOglasa>
+            <Stanovi/>
+        </KategorijaOglasa>
+        <Datum_Isteka_Oglasa>2023-01-22</Datum_Isteka_Oglasa>
+        <Cena valuta="din">11000000</Cena>
+        <TekstOglasa>
+            Na prodaju stan na odličnoj lokaciji, u strogom centru.
+            Površina stana je 133m2 + dva manja balkona.
+        </TekstOglasa>
+        <Oznaka>
+            Nis
+        </Oznaka>
+        <Oznaka>
+        </Oznaka>
+            cetar
+        <Oznaka>
+            parking
+        </Oznaka>
+        <E-posta tip="privatni">nesto@gmail.com</E-posta>
+    </Oglas>
+    <Oglas>
+        <KategorijaOglasa>
+            <Alati/>
+        </KategorijaOglasa>
+        <Datum_Isteka_Oglasa>2023-01-28</Datum_Isteka_Oglasa>
+        <Cena valuta="din">8000</Cena>
+        <TekstOglasa>
+            Gedore set 171 kom Proline Germany
+            Materijal je hrom-vanadijum.
+            Set je proizveden od strane Nemackog proizvodjaca ProLine
+        </TekstOglasa>
+        <Oznaka>
+            Akcija
+        </Oznaka>
+        <Oznaka>
+        </Oznaka>
+            Novo/Nekorisceno
+        <Oznaka>
+            Proline
+        </Oznaka>
+        <E-posta tip="privatni">nesto2@gmail.com</E-posta>
+        <E-posta tip="privatni">nesto12@gmail.com</E-posta>
+        <E-posta tip="sluzbeni">nesto222@gmail.com</E-posta>
+    </Oglas>
 </Oglasi>
