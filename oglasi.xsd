@@ -1,0 +1,81 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="datum1">
+        <xs:restriction base="xs:string">
+            <xs:pattern
+                    value="\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="cena1">
+        <xs:restriction base="xs:integer">
+            <xs:minExclusive value="-1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="tekst1">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="10"></xs:minLength>
+            <xs:maxLength value="180"></xs:maxLength>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="email1">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="email2">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="privatni|sluzbeni"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:element name="Oglasi">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Oglas" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType mixed="true">
+                        <xs:sequence>
+                            <xs:element name="KategorijaOglasa">
+                                <xs:complexType>
+                                    <xs:choice>
+                                        <xs:element type="xs:string" name="Automobili" minOccurs="0"/>
+                                        <xs:element type="xs:string" name="Stanovi" minOccurs="0"/>
+                                        <xs:element type="xs:string" name="Alati" minOccurs="0"/>
+                                        <xs:element type="xs:string" name="Poducavanje" minOccurs="0"/>
+                                    </xs:choice>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element type="datum1" name="Datum_Isteka_Oglasa" minOccurs="1"/>
+                            <xs:element name="Cena" minOccurs="1">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="cena1">
+                                            <xs:attribute name="valuta" type="xs:string" use="optional" default="din"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                            <xs:element type="tekst1" name="TekstOglasa" minOccurs="1">
+                            </xs:element>
+                            <xs:element type="xs:string" name="Oznaka" minOccurs="1" maxOccurs="unbounded"/>
+                            <xs:element name="E-posta" minOccurs="1" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="email1">
+                                            <xs:attribute name="tip" type="email2" use="required"/>
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
