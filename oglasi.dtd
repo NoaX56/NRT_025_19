@@ -1,4 +1,4 @@
-<!ELEMENT Oglasi (Oglas)*>
+<!ELEMENT Oglasi (Oglas*)>
 <!ELEMENT E-posta (#PCDATA)>
 <!ELEMENT Oglas (KategorijaOglasa,Datum_Isteka_Oglasa,Cena,TekstOglasa,Oznaka*,E-posta+)
 <!ELEMENT Automobili EMPTY>
