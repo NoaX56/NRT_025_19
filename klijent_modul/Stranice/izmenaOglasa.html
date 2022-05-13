@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izmena oglasa</title>
+</head>
+<body>
+    <nav>
+        <a href="/sviOglasi">Oglasi</a>
+        <a href="/dodajOglas">Dodaj novi oglas</a>
+    </nav>
+    <form action="/cuvanjeIzmena" method="post" id="formaa1">
+        <label>Kategorija:</label>
+        <select name="kategorija" id="selektor">
+            <option value="alati">Alati</option>
+            <option value="automobili">Automobili</option>
+            <option value="poducavanje">Poducavanje</option>
+            <option value="stanovi">Stanovi</option>
+        </select>
+        <br>
+        <label>Datum isteka oglasa: </label>
+        <input type="date" name="datum" id="datumID" value="{#oglas_datum}">
+        <br>
+        <label>Cena oglasa: </label>
+        <input type="number" name="cena" id="cenaID" value="{#oglas_cena}">
+        <input type="text" name="valuta" id="valutaID" value="{#oglas_valuta}">
+        <br>
+        <label>Tekst oglasa:</label>
+        <br>
+        <textarea name="tekst" rows="4" cols="50" id="tekstID" >{#oglas_tekst}</textarea>
+        <br>
+        <label>Oznaka:</label>
+        <input type="text" id="oznakaID">
+        <br>
+        <label>Email:</label>
+        <input type="text" id="emailID">
+        <input type="radio" name="tipEmail" id="poslovniID" value="poslovni" {#oglas_poslovni}>Poslovni
+        <input type="radio" name="tipEmail" id="sluzbeniID" value="sluzbeni" {#oglas_sluzbeni}>Sluzbeni
+        <br>
+        <br>
+        <input type="hidden" id="oznakeeeID" name="oznake" value="">
+        <input type="hidden" id="emailoviID" name="email" value="nema@nema.nema">
+        <input type="hidden" id="emailoviID" name="id" value="#{id#}">
+        
+
+    </form>
+    <button onclick="funkcija()">izmeni oglas</button>
+
+    <!-- <button onclick="dodajOznaku()">Dodaj novu oznaku</button>
+    <button onclick="dodajEmail()">Dodaj novi Email</button> -->
+
+    <br>
+    <br>
+    <br>
+    {#listaOznakaMenjanje}
+
+    <br>
+    <br>
+
+    {#listaEmailMenjanje}
+
+    
+    <script>
+
+
+
+
+
+        document.getElementById('selektor').value='#{kategorija}'
+
+        // document.getElementById('datumID').value='2022-05-10'
+        // document.getElementById('cenaID').value='4124'
+        // document.getElementById('valutaID').value='din'
+        // document.getElementById('tekstID').value='asfnaofbaidfi'
+
+        
+
+
+
+        listaOznaka=[]
+        var vrednost=document.getElementById("oznakaID")
+        var prikazOznakeLista=document.getElementById("prikazOznakeID")
+        var skriveneOznakeForma=document.getElementById("oznakeeeID")
+        skriveneOznakeForma.value="#@#NEMA"
+        var poruka="Oznake:  "
+        var porukaZaPostOznaka=""
+
+
+
+
+
+        function dodajOznaku(){
+            if(vrednost.value.trim().length==0)
+                return
+            for(el of listaOznaka)
+            {
+                if(el==vrednost.value.trim().toLowerCase())
+                {
+                    alert("Takav vec postoji")
+                    vrednost.value=""
+                    return
+                }
+            }
+            poruka+=`${vrednost.value.trim().toLowerCase()},  `
+            listaOznaka.push(vrednost.value.trim().toLowerCase())
+            if(skriveneOznakeForma.value =='#@#NEMA')
+                skriveneOznakeForma.value=""
+
+            if(porukaZaPostOznaka.length>0)
+                porukaZaPostOznaka+=","
+            porukaZaPostOznaka+=(vrednost.value.trim().toLowerCase())
+            skriveneOznakeForma.value=porukaZaPostOznaka
+            prikazOznakeLista.innerHTML=poruka
+            vrednost.value=""
+        }
+        var listaEmail=[]
+        var porukaZaMail=""
+        var radioP=document.getElementById('poslovniID')
+        var radioS=document.getElementById('sluzbeniID')
+        var hiddenEmail=document.getElementById('emailoviID')
+        var emailPolje=document.getElementById('emailID')
+        var prikazEmail=document.getElementById('prikazEmailID')
+
+        function dodajEmail(){
+            if(!radioP.checked && !radioS.checked)
+            {
+                alert("Izaberi opciju za email")
+                return
+            }
+            console.log(listaEmail)
+            for(el of listaEmail)
+            {
+                if(el==emailPolje.value.trim().toLowerCase())
+                {
+                    alert("Takav vec postoji")
+                    emailPolje.value=""
+                    return
+                }
+            }
+            listaEmail.push(emailPolje.value.trim().toLowerCase())
+            if(porukaZaMail.length>0)
+                porukaZaMail+=","
+            
+            porukaZaMail+=emailPolje.value.trim().toLowerCase()
+            if(radioP.checked)
+            {
+                porukaZaMail+="-poslovni"
+            }
+            if(radioS.checked)
+            {
+                porukaZaMail+="-sluzbeni"
+            }
+            prikazEmail.innerHTML="Email:"+porukaZaMail
+            hiddenEmail.value=porukaZaMail
+            emailPolje.value=""
+        }
+
+
+        var tmp01=document.getElementById('zaCuvanje1')
+        var tmp02=document.getElementById('zaCuvanje2')
+
+
+        function sacuvaj1(){
+            if(skriveneOznakeForma.value=="#@#NEMA")
+                skriveneOznakeForma.value=tmp01.value
+            else{
+                skriveneOznakeForma.value+=tmp01.value
+            }
+        }
+
+        function sacuvaj2(){
+            if(hiddenEmail.value=="nema@nema.nema")
+                hiddenEmail.value=tmp02.value
+            else{
+                hiddenEmail.value+=tmp02.value
+            }
+        }
+
+
+
+        function validacijaTeksta(){
+            tmpTekst=document.getElementById('tekstID').value
+            // console.log(tmpTekst.length)
+            if(tmpTekst.length>181 || tmpTekst.length<9 )
+                return false
+
+            return true
+        }
+
+        function validacijaCene(){
+            tmpCena=document.getElementById('cenaID').value
+            if(tmpCena.startsWith("-"))
+                return false
+            return true
+        }
+
+        function validacijaDatuma(){
+            tmpDatum=document.getElementById('datumID').value
+            const regexExp1=/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+            return regexExp1.test(tmpDatum);
+        }
+
+        function validacijaEmail(){
+            tmpemaillll=document.getElementById('emailoviID').value
+            asfasfasf=tmpemaillll.split(",")
+            const regexExp2=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            listaEmailZaTest=[]
+            for(aa of asfasfasf)
+            {
+                listaEmailZaTest.push(aa.split("-")[0])
+            }
+
+            for(bb of listaEmailZaTest){
+                if(regexExp2.test(bb)==false)
+                    return false
+            }
+            return true
+        }
+
+
+        function funkcija()
+        {
+            
+            if(validacijaTeksta()==false){
+                alert("Pravila za tekst nisu ispostovana")
+                return
+            }
+            if(!validacijaCene()){
+                alert("Pravila za cenu nisu ispostovana")
+                return
+            }
+            if(!validacijaEmail()){
+                alert("Pravila za email nisu ispostovana")
+                document.getElementById('emailoviID').value='nema@nema.nema'
+                document.getElementById('prikazEmailID').innerHTML="Email:"
+                listaEmail=[]
+                porukaZaMail=""
+                return
+            }
+            if(!validacijaDatuma()){
+                alert("Pravila za datum nisu ispostovana")
+                return
+            }
+            
+            document.getElementById('formaa1').submit()
+        }
+
+
+
+
+    </script>
+
+
+    
+</body>
+</html>

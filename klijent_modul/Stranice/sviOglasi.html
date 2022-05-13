@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <a href="/sviOglasi">Oglasi</a>
+        <a href="/dodajOglas">Dodaj novi oglas</a>
+    </nav>
+    <div>
+        <form action="/filtrirajPoOpciji" method="POST">
+            <select  name="opcija">
+                <option value="oznaka">Po oznaci</option>
+                <option value="kategorija">Po kategoriji</option>
+                <option value="cena">Po ceni</option>
+            </select>
+            <input type="text" name="podatak"> <button type="submit">Filtriraj</button>
+        </form>
+    </div>
+    <table border=1>
+        <thead>
+            <tr>
+                <td>Tekst</td>
+                <td>Datum</td>
+                <td>Cena</td>
+                <td>Kategorija</td>
+                <td>Oznake</td>
+                <td>Email</td>
+                <td>Obrisi</td>
+
+            </tr>
+        </thead>
+        <tbody>
+            #{data}
+        </tbody>
+    </table>
+</body>
+</html>
