@@ -1,0 +1,11 @@
+{
+  "name": "rad_sa_oglasima_modul",
+  "version": "1.0.0",
+  "description": "",
+  "main": "rad_sa_oglasima.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AJ",
+  "license": "ISC"
+}

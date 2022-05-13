@@ -1,0 +1,15 @@
+{
+  "name": "oglas_server_modul",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server_oglas.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AJ",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "rad_sa_oglasima_modul": "file:../rad_sa_oglasima_modul"
+  }
+}
