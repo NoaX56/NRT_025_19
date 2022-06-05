@@ -8,8 +8,8 @@ const port = 5005;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-let ucitajStranicu=(naziv)=>{
-    return fs.readFileSync(path.join(__dirname+"/Stranice/"+naziv+".html"),"utf-8")
+let ucitajStranicu=(naziv,zavrsetak="html")=>{
+    return fs.readFileSync(path.join(__dirname+"/Stranice/"+naziv+"."+zavrsetak),"utf-8")
 }
 
 app.get("/",(req,res)=>{
@@ -17,7 +17,13 @@ app.get("/",(req,res)=>{
 });
 
 app.get("/dodajOglas",(req,res)=>{
-    res.send(ucitajStranicu("dodajOglasStrana"));
+    res.send(ucitajStranicu("dodaj_izmeni")
+    .replace("{#btnDodajT#}","Dodaj oglas")
+    .replace("{#inputHiddenOglasId}","")
+    .replace("{#akcijaPutanja}","/snimiOglas")
+    .replace("//{skriptaDeoUbaci}",ucitajStranicu("skripta_izmena","js"))
+    .replace('"##dataObjOglas##"',null)
+    );
 });
 app.post("/snimiOglas",(req,res)=>{
     console.log(req.body)
@@ -26,10 +32,11 @@ app.post("/snimiOglas",(req,res)=>{
         datum:req.body.datum,
         cena:req.body.cena,
         tekst:req.body.tekst,
-        valuta:req.body.valuta,
         oznake:req.body.oznake,
         email:req.body.email
     })
+    //res.redirect("/dodajOglas")
+    
     res.redirect("/sviOglasi");
 
 })
@@ -47,52 +54,27 @@ app.post('/cuvanjeIzmena',(req,res)=>{
         datum:req.body.datum,
         cena:req.body.cena,
         tekst:req.body.tekst,
-        valuta:req.body.valuta,
         oznake:req.body.oznake,
         email:req.body.email,
         id:req.body.id
     })
     res.redirect("/sviOglasi");
-
-
-
-
-
 })
 
 
 
 app.get("/izmeniOglas/:id",(req,res)=>{
-    console.log(req.params["id"])
     axios.get(`http://localhost:3005/getoglasbyid/${req.params["id"]}`)
     .then(response=>{
-        var div1=`
-        <div>
-            <label>Oznake:</label><textarea name="tekst" rows="4" cols="50" id="zaCuvanje1">${response.data.oznake}</textarea>
-            <button onclick="sacuvaj1()">Sacuvaj izmene u boxu za oznake</button>
-        </div>`
-        var div2=`
-        <div>
-            <label>Email:</label><textarea name="tekst" rows="4" cols="50" id="zaCuvanje2">${response.data.email}</textarea>
-            <button onclick="sacuvaj2()">Sacuvaj izmene u boxu za email</button>
-        </div>`
-        
+        let oglas=response.data
 
-
-
-        res.send(ucitajStranicu("izmenaOglasa").replace("#{kategorija}",response.data.kategorija)
-        .replace("{#oglas_datum}",response.data.datum).replace("{#oglas_cena}",response.data.cena)
-        .replace("{#oglas_valuta}",response.data.valuta).replace("{#oglas_tekst}",response.data.tekst)
-        .replace("{#oglas_cena}",response.data.cena).replace("{#oglas_cena}",response.data.cena)
-        .replace("{#listaOznakaMenjanje}",div1).replace("{#listaEmailMenjanje}",div2)
-        .replace("#{id#}",response.data.id));
-
-
-
-
-
-
-        //res.redirect("/sviOglasi")
+        res.send(ucitajStranicu("dodaj_izmeni")
+        .replace("{#inputHiddenOglasId}",`<input type="hidden" id="hidden_oglasId" name="id" value="${req.params["id"]}">`)
+        .replace("{#akcijaPutanja}","/cuvanjeIzmena")
+        .replace("{#btnDodajT#}","Izmeni oglas")
+        .replace("//{skriptaDeoUbaci}",ucitajStranicu("skripta_izmena","js"))
+        .replace('"##dataObjOglas##"',JSON.stringify(oglas))
+        )
     })
     .catch(error => {
         console.log(error);
@@ -105,22 +87,18 @@ app.get("/sviOglasi",(req,res)=>{
     axios.get('http://localhost:3005/sviOglasi')
     .then(response => {
         let prikaz="";
-        //console.log(response.data)
         response.data.forEach(oglas1 => {
-            oznake=oglas1.oznake
-            email=oglas1.email
-            if(oznake=="#@#NEMA")
-                oznake=""
-            if(email=="nema@nema.nema"){
-                email=""
-            }
+            let prikazEmail="<ul>"
+            for (let el of oglas1.email)
+                prikazEmail+=`<li>${el.email} - ${el.tip}</li>`
+            prikazEmail+="</ul>"
             prikaz+=`<tr>
             <td>${oglas1.tekst}</td>
             <td>${oglas1.datum}</td>
-            <td>${oglas1.cena}</td>
+            <td>${oglas1.cena.vrednost} ${oglas1.cena.valuta}</td>
             <td>${oglas1.kategorija}</td>
-            <td>${oznake}</td>
-            <td>${email}</td>
+            <td>${oglas1.oznake}</td>
+            <td>${prikazEmail}</td>
             <td><a href="/obrisiOglas/${oglas1.id}">Obrisi</a></td>
             <td><a href="/izmeniOglas/${oglas1.id}">Izmeni</a></td>
         </tr>`;
@@ -141,21 +119,17 @@ app.post("/filtrirajPoOpciji",(req,res)=>{
     .then(response=>{
         let prikaz="";
         response.data.forEach(oglas1 => {
-            oznake=oglas1.oznake
-            email=oglas1.email
-            if(oznake=="#@#NEMA")
-                oznake=""
-            if(email=="nema@nema.nema"){
-                email=""
-            }
-
+            let prikazEmail="<ul>"
+            for (let el of oglas1.email)
+                prikazEmail+=`<li>${el.email} - ${el.tip}</li>`
+            prikazEmail+="</ul>"
             prikaz+=`<tr>
             <td>${oglas1.tekst}</td>
             <td>${oglas1.datum}</td>
-            <td>${oglas1.cena}</td>
+            <td>${oglas1.cena.vrednost} ${oglas1.cena.valuta}</td>
             <td>${oglas1.kategorija}</td>
-            <td>${oznake}</td>
-            <td>${email}</td>
+            <td>${oglas1.oznake}</td>
+            <td>${prikazEmail}</td>
             <td><a href="/obrisiOglas/${oglas1.id}">Obrisi</a></td>
             <td><a href="/izmeniOglas/${oglas1.id}">Izmeni</a></td>
         </tr>`;

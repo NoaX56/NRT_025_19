@@ -15,11 +15,6 @@ app.get('/',(request,response)=>{
 
 app.get('/sviOglasi',(request,response)=>{
     response.send(oglasiServis.sviOglasi())
-
-
-    // console.log("server sviOglasi poziv")
-    // console.log(oglasiServis.sviOglasi())
-    // console.log("server sviOglasi poziv kraj")
 })
 
 app.post('/addOglas',(request, response)=>{
@@ -41,7 +36,6 @@ app.get('/getOglasPoOpcijiIPodatku',(request, response)=>{
 });
 
 app.post('/izmeniOglass',(request, response)=>{
-    //console.log(request.body)
     oglasiServis.izmeni(request.body);
     response.end("OK");
 })

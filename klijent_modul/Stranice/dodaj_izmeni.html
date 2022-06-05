@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <title>Dodaj oglas</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-sm navbar-light bg-light mb-5">
+        <a class="navbar-brand" href="#">NOAX</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/sviOglasi">Oglasi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dodajOglas">Dodaj novi oglas</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- <form class="mx-5 pt-5">
+
+        <div class="container row">
+            <label class="col-form-label">Kategorija:</label>
+
+            <select class="form-select w-25" aria-label="Default select example">
+                <option value="alati" selected>Alati</option>
+                <option value="automobili">Automobili</option>
+                <option value="poducavanje">Poducavanje</option>
+                <option value="stanovi">Stanovi</option>
+            </select>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-form-label">Email</label>
+            <div class="w-25">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" placeholder="Email:">
+            </div>
+        </div>
+
+        <div class="row" inline="true">
+            <label class="col-form-label">Datum isteka oglasa:</label>
+            <input type="date" name="datum" id="datumID" class="form-control w-25">
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <label for="startDate">Start</label>
+            <input id="startDate" class="form-control" type="date" />
+            <span id="startDateSelected"></span>
+        </div>
+
+        <div>
+            <label>Cena oglasa: </label>
+            <input type="number" name="cena" id="cenaID">
+            <input type="text" name="valuta" id="valutaID">
+        </div>
+
+
+    </form> -->
+
+    <form action="{#akcijaPutanja}" method="post" id="formaa1">
+
+        <label>Kategorija:</label>
+        <select name="kategorija" id="selektor">
+            <option value="alati">Alati</option>
+            <option value="automobili">Automobili</option>
+            <option value="poducavanje">Poducavanje</option>
+            <option value="stanovi">Stanovi</option>
+        </select><br>
+
+        <label>Datum isteka oglasa: </label>
+        <input type="date" name="datum" id="datumID"><br>
+
+        <label>Cena oglasa: </label>
+        <input type="number" id="cenaID">
+        <input type="text" id="valutaID">
+        <br>
+
+        <label>Tekst oglasa:</label><br>
+        <textarea name="tekst" rows="4" cols="50" id="tekstID" ></textarea><br>
+
+        <label>Oznaka:</label>
+        <input type="text" id="oznakaInputId"><br>
+
+        <label>Email:</label>
+        <input type="text" id="emailInputId">
+
+        <input type="radio" name="emailTipInput" id="rb_poslovniId" value="poslovni">Poslovni
+        <input type="radio" name="emailTipInput" id="rb_sluzbeniId" value="sluzbeni">Sluzbeni<br><br>
+
+        {#inputHiddenOglasId}
+        <input type="hidden" id="hidden_cenaId" name="cena">
+        <input type="hidden" id="hidden_oznakaId" name="oznake">
+        <input type="hidden" id="hidden_emailId" name="email">
+    </form>
+
+    <button onclick="saljiPodatke()">{#btnDodajT#}</button>
+    <button onclick="dodajOznaku()">Dodaj novu oznaku</button>
+    <button onclick="dodajEmail()">Dodaj novi Email</button>
+
+    <br>
+    <p id="divOznakeId"></p>
+    <br>
+    <p id="divEmailId"></p>
+
+
+    <!-- <script src="skripta.js"> -->
+    <script>
+
+        //{skriptaDeoUbaci}
+
+
+        function validacijaTeksta() {
+            tmpTekst = document.getElementById("tekstID").value;
+            if (tmpTekst.length > 181 || tmpTekst.length < 9) return false;
+            return true;
+        }
+
+        function validacijaCene() {
+            tmpCena = inputCena.value;
+            return tmpCena.match(/^[0-9]+$/);
+        }
+
+        function validacijaValute() {
+            tmpValuta = inputValuta.value
+            return tmpValuta.match(/^[a-zA-Z]{3}$/)
+        }
+
+        function validacijaDatuma() {
+            tmpDatum = document.getElementById("datumID").value;
+            const regexExp1 = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
+            return regexExp1.test(tmpDatum);
+        }
+        function validacijaDatuma2(){
+            if(oglasObj==null || oglasObj.datum!=inputDatum.value){
+                var izabraniDatum = new Date(document.getElementById("datumID").value)
+                var now = new Date();
+                    if (izabraniDatum < now) {
+                        return false
+                    }
+            }
+            return true
+        }
+        function validacijaEmail(email) {
+            const regexExpEmail =
+                 	/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            return regexExpEmail.test(email);
+        }
+
+        function saljiPodatke() {
+
+            if (!validacijaDatuma() || !validacijaDatuma2()) {
+                alert("Pravila za datum nisu ispostovana");
+                return;
+            }
+            if (validacijaTeksta() == false) {
+                alert("Pravila za tekst nisu ispostovana");
+                return;
+            }
+            if (!validacijaCene()) {
+                alert("Pravila za cenu nisu ispostovana");
+                return;
+            }
+            if (!validacijaValute()) {
+                alert("Pravila za valutu nisu ispostovana");
+                return;
+            }
+            if(listaEmail.length==0)
+            {
+                alert("Oglas mora da ima bar 1 email");
+                return;
+            }
+            hiddenOznaka.value = JSON.stringify(listaOznaka);
+            hiddenEmail.value = JSON.stringify(listaEmail);
+            hiddenCena.value = JSON.stringify({ vrednost: parseInt(inputCena.value), valuta: inputValuta.value })
+
+            console.log(hiddenCena.value)
+
+            document.getElementById('formaa1').submit()
+        }
+
+
+        
+    </script>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+</body>
+
+
+
+</body>
+
+</html>

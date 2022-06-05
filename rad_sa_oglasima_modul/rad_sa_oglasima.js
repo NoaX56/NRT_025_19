@@ -20,51 +20,67 @@ exports.addOglas = (noviOglas) => {
     id = oglasi[oglasi.length - 1].id + 1;
   }
   noviOglas.id = id;
-  oglasi.push(noviOglas);
+  
+  let oglasObj={
+    id:id,
+    kategorija:noviOglas.kategorija,
+    datum:noviOglas.datum,
+    cena:JSON.parse(noviOglas.cena),
+    tekst:noviOglas.tekst,
+    oznake:JSON.parse(noviOglas.oznake),
+    email:JSON.parse(noviOglas.email)
+  }
+
+  console.log(oglasObj)
+
+  oglasi.push(oglasObj);
   snimiOglase(oglasi);
-  console.log("addOglas prikaz liste")
-  console.log(this.sviOglasi())
-  console.log("kraj prikaza prikaz liste")
 };
 
 exports.getOglasByPodatakAndOpcija=(podatak,opcija)=>{
-  // console.log("Opcija je: "+opcija)
-  // console.log("Podatak je:"+podatak+"///")
   if(opcija=="oznaka"){
         return this.sviOglasi().filter(oglas=>{
-        listaOznaka=oglas.oznake.split(",")
-        for(el of listaOznaka)
+        if(oglas.oznake.length==0 && podatak.trim().length==0) return oglas
+        for(el of oglas.oznake)
         {
-          if(el==podatak.trim().toLowerCase()){
+          if(el.includes(podatak.trim())&& podatak.trim().length!=0){
             return oglas
           }
         }
     })
   }
   else if(opcija=="kategorija"){
-    return this.sviOglasi().filter(oglas=>oglas.kategorija==podatak.trim().toLowerCase());
+    return this.sviOglasi().filter(oglas=>oglas.kategorija.includes(podatak.trim().toLowerCase()));
   }
   else if(opcija=="cena"){
-    return this.sviOglasi().filter(oglas=>oglas.cena==podatak.trim().toLowerCase());
+    if(podatak.trim().match(/^[0-9]+$/))
+      return this.sviOglasi().filter(oglas=>oglas.cena.vrednost==parseInt(podatak.trim()))
+    else
+      return []
   }
 }
 
 exports.izmeni=(oglas)=>{
-  //console.log(oglas)
   lista=this.sviOglasi()
-  //console.log("/////////")
-  //console.log(lista)
+  let oglasIzmenaObj={
+    id:oglas.id,
+    kategorija:oglas.kategorija,
+    cena:JSON.parse(oglas.cena),
+    email:JSON.parse(oglas.email),
+    tekst:oglas.tekst,
+    oznake:JSON.parse(oglas.oznake),
+    datum:oglas.datum
+  }
   for(el of lista)
   {
-    if(el.id==oglas.id)
+    if(el.id==oglasIzmenaObj.id)
     {
-      el.tekst=oglas.tekst
-      el.cena=oglas.cena
-      el.valuta=oglas.valuta
-      el.email=oglas.email
-      el.kategorija=oglas.kategorija
-      el.oznake=oglas.oznake
-      el.datum=oglas.datum
+      el.kategorija=oglasIzmenaObj.kategorija
+      el.datum=oglasIzmenaObj.datum
+      el.cena=oglasIzmenaObj.cena
+      el.tekst=oglasIzmenaObj.tekst
+      el.email=oglasIzmenaObj.email
+      el.oznake=oglasIzmenaObj.oznake
     }
   }
   snimiOglase(lista)

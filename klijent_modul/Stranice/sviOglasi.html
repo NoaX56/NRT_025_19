@@ -3,12 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>SVI OGLASI</title>
 </head>
 <body>
-    <nav>
-        <a href="/sviOglasi">Oglasi</a>
-        <a href="/dodajOglas">Dodaj novi oglas</a>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light mb-5">
+        <a class="navbar-brand" href="#">NOAX</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/sviOglasi">Oglasi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/dodajOglas">Dodaj novi oglas</a>
+                </li>
+            </ul>
+        </div>
     </nav>
     <div>
         <form action="/filtrirajPoOpciji" method="POST">
@@ -20,16 +36,16 @@
             <input type="text" name="podatak"> <button type="submit">Filtriraj</button>
         </form>
     </div>
-    <table border=1>
-        <thead>
+    <table class="table table-bordered">
+        <thead  class="thead-dark">
             <tr>
-                <td>Tekst</td>
-                <td>Datum</td>
-                <td>Cena</td>
-                <td>Kategorija</td>
-                <td>Oznake</td>
-                <td>Email</td>
-                <td>Obrisi</td>
+                <td scope="col">Tekst</td>
+                <td scope="col">Datum</td>
+                <td scope="col">Cena</td>
+                <td scope="col">Kategorija</td>
+                <td scope="col">Oznake</td>
+                <td scope="col">Email</td>
+                <td scope="col">Obrisi</td>
 
             </tr>
         </thead>
